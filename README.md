@@ -20,7 +20,7 @@
 
 
 ## **BIO**
-Editor: **Yan XIONG (UCAS & EPFL)**
+Author: **Yan XIONG (UCAS & EPFL)**
 
 Dr. Yan Xiong is a visiting Ph.D. student from the University of Chinese Academy of Sciences, P.R. China, and he is currently studying at EPFL. His research focuses on research on intelligent thermal control based on deep reinforcement learning for space load, and engineering applications of AI, such as robotic systems, spacecraft strategic planning etc.
 
