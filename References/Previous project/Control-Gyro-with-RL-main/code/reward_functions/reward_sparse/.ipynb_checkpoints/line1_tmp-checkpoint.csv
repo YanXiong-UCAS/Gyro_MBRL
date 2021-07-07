@@ -1,0 +1,18 @@
+,ddpg_e10
+$	heta$ MAE (rad),0.1742
+$\phi$ MAE (rad),0.1175
+$	heta$ MSSE (rad),0.0865
+$\phi$ MSSE (rad),0.0627
+$	heta$ in bounds (%),86.0
+$\phi$ in bounds (%),87.25
+$	heta$ unsteady (%),9.19
+$\phi$ unsteady (%),11.05
+$	heta$ rise time (s),0.5794
+$\phi$ rise time (s),0.3373
+$	heta$ settling time (s),0.7869
+$\phi$ settling time (s),0.5999
+u1 (V),1.1867
+u2 (V),1.787
+u1 variation (V),1.0054
+u2 variation (V),2.5539
+Convergence time (min),0.0

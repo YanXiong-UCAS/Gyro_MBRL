@@ -1,0 +1,51 @@
+{
+    "ac_kwargs":	{
+        "activation":	"ReLU",
+        "hidden_sizes":	[
+            128,
+            32
+        ]
+    },
+    "act_noise":	0.125,
+    "actor_critic":	"MLPActorCritic",
+    "batch_size":	200,
+    "env_fn":	"functools.partial(<function env_fn at 0x2b951d6fa158>, 'GyroscopeEnv-v1', simu_args={'dt': 0.02, 'ep_len': 250, 'seed': 2}, reward_func='Power', reward_args={'qx1': 1, 'qx2': 0.1, 'qx3': 1, 'qx4': 0.1, 'pu1': 0.2, 'pu2': 0.2, 'p': 0.05})",
+    "epochs":	2000,
+    "exp_name":	"iter2_reward04",
+    "gamma":	0.94,
+    "logger":	{
+        "<spinup.utils.logx.EpochLogger object at 0x2b948c57d1d0>":	{
+            "epoch_dict":	{},
+            "exp_name":	"iter2_reward04",
+            "first_row":	true,
+            "log_current_row":	{},
+            "log_headers":	[],
+            "output_dir":	"iter2_reward04",
+            "output_file":	{
+                "<_io.TextIOWrapper name='iter2_reward04/progress.txt' mode='w' encoding='UTF-8'>":	{
+                    "mode":	"w"
+                }
+            }
+        }
+    },
+    "logger_kwargs":	{
+        "exp_name":	"iter2_reward04",
+        "output_dir":	"iter2_reward04"
+    },
+    "max_ep_len":	250,
+    "num_test_episodes":	10,
+    "pi_lr":	0.001,
+    "polyak":	0.999,
+    "q_lr":	0.001,
+    "replay_size":	4000000,
+    "save_file":	false,
+    "save_freq":	1,
+    "seed":	0,
+    "start_steps":	5000,
+    "steps_per_epoch":	3750,
+    "trained_ac":	null,
+    "trained_ac_targ":	null,
+    "trained_bf":	null,
+    "update_after":	1000,
+    "update_every":	50
+}

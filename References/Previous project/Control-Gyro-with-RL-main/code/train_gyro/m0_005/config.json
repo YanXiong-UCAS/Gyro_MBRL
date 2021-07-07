@@ -1,0 +1,51 @@
+{
+    "ac_kwargs":	{
+        "activation":	"ReLU",
+        "hidden_sizes":	[
+            128,
+            32
+        ]
+    },
+    "act_noise":	0.1,
+    "actor_critic":	"MLPActorCritic",
+    "batch_size":	100,
+    "env_fn":	"functools.partial(<function env_fn at 0x2b48f89fa1e0>, 'GyroscopeEnv-v1', simu_args={'dt': 0.05, 'ep_len': 100, 'seed': 2}, reward_func='PE', reward_args={'qx1': 1, 'qx2': 0.2, 'qx3': 1, 'qx4': 0.2, 'pu1': 0.1, 'pu2': 0.1, 'p': 0.1, 'e': 40})",
+    "epochs":	5000,
+    "exp_name":	"m0_005_v0",
+    "gamma":	0.96,
+    "logger":	{
+        "<spinup.utils.logx.EpochLogger object at 0x2b486789a0f0>":	{
+            "epoch_dict":	{},
+            "exp_name":	"m0_005_v0",
+            "first_row":	true,
+            "log_current_row":	{},
+            "log_headers":	[],
+            "output_dir":	"m0_005_v0",
+            "output_file":	{
+                "<_io.TextIOWrapper name='m0_005_v0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                    "mode":	"w"
+                }
+            }
+        }
+    },
+    "logger_kwargs":	{
+        "exp_name":	"m0_005_v0",
+        "output_dir":	"m0_005_v0"
+    },
+    "max_ep_len":	100,
+    "num_test_episodes":	10,
+    "pi_lr":	0.002,
+    "polyak":	0.999,
+    "q_lr":	0.002,
+    "replay_size":	8000000,
+    "save_file":	true,
+    "save_freq":	1,
+    "seed":	0,
+    "start_steps":	15000,
+    "steps_per_epoch":	1500,
+    "trained_ac":	null,
+    "trained_ac_targ":	null,
+    "trained_bf":	null,
+    "update_after":	1000,
+    "update_every":	50
+}

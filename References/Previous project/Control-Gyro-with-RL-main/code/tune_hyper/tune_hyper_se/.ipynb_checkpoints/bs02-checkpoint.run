@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --chdir /home/zhithuan/tune_hyper_se
+#SBATCH --nodes 1
+#SBATCH --ntasks 1
+#SBATCH --cpus-per-task 1
+#SBATCH --mem 4096
+#SBATCH --time 12:00:00
+
+module load gcc/8.3.0
+module load python
+source /home/zhithuan/my_env/bin/activate
+
+echo STARTING at `date`
+python /home/zhithuan/tune_hyper_se/bs02.py
+echo FINISHED at `date`

@@ -1,0 +1,18 @@
+,ddpg_se_xe10b0001_mher,ddpg_test_b001,ddpg_test_b0001
+$	heta$ MAE (rad),0.1452,0.4789,0.1083
+$\phi$ MAE (rad),0.1218,0.1918,0.0775
+$	heta$ MSSE (rad),0.1153,0.5712,
+$\phi$ MSSE (rad),0.0207,0.1296,0.0238
+$	heta$ in bounds (%),100.0,0.0,0.0
+$\phi$ in bounds (%),100.0,100.0,100.0
+$	heta$ unsteady (%),0.0,0.0,100.0
+$\phi$ unsteady (%),0.0,0.0,0.0
+$	heta$ rise time (s),0.1508,,
+$\phi$ rise time (s),0.5528,0.3518,0.201
+$	heta$ settling time (s),0.3518,,
+$\phi$ settling time (s),0.5025,0.3015,0.5025
+u1 (V),0.4436,1.2314,5.5644
+u2 (V),0.6938,1.508,7.0761
+u1 variation (V),0.1401,1.625,5.9701
+u2 variation (V),0.2018,2.0783,13.6516
+Convergence time (min),0.0,0.0,0.0

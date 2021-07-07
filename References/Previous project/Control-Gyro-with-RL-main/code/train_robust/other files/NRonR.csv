@@ -1,0 +1,18 @@
+,NR on R
+$	heta$ MAE (rad),0.093
+$\phi$ MAE (rad),0.0704
+$	heta$ MSSE (rad),0.0135
+$\phi$ MSSE (rad),0.0126
+$	heta$ in bounds (%),99.875
+$\phi$ in bounds (%),99.375
+$	heta$ unsteady (%),0.0625
+$\phi$ unsteady (%),0.625
+$	heta$ rise time (s),0.5078
+$\phi$ rise time (s),0.3574
+$	heta$ settling time (s),0.6352
+$\phi$ settling time (s),0.4822
+u1 (V),1.8402
+u2 (V),1.6582
+u1 variation (V),2.6551
+u2 variation (V),2.5392
+Convergence time (min),0.0

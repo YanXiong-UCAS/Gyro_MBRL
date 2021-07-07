@@ -1,0 +1,49 @@
+{
+    "ac_kwargs":	{
+        "activation":	"ReLU",
+        "hidden_sizes":	[
+            128,
+            32
+        ]
+    },
+    "act_noise":	0.03,
+    "actor_critic":	"MLPActorCritic",
+    "batch_size":	100,
+    "env_fn":	"functools.partial(<function env_fn at 0x2ba461e618c8>, 'GyroscopeEnv-v1', simu_args={'dt': 0.05, 'ep_len': 100, 'seed': 2}, reward_func='Sparse with exp', reward_args={'qx1': 1, 'qx2': 0.2, 'qx3': 1, 'qx4': 0.2, 'pu1': 0, 'pu2': 0, 'e': 10, 'bound': 0.001, 'reward': 10})",
+    "epochs":	10000,
+    "exp_name":	"iter2_final",
+    "gamma":	0.95,
+    "her":	true,
+    "logger":	{
+        "<spinup.utils.logx.EpochLogger object at 0x2ba3d0cf6278>":	{
+            "epoch_dict":	{},
+            "exp_name":	"iter2_final",
+            "first_row":	true,
+            "log_current_row":	{},
+            "log_headers":	[],
+            "output_dir":	"iter2_final",
+            "output_file":	{
+                "<_io.TextIOWrapper name='iter2_final/progress.txt' mode='w' encoding='UTF-8'>":	{
+                    "mode":	"w"
+                }
+            }
+        }
+    },
+    "logger_kwargs":	{
+        "exp_name":	"iter2_final",
+        "output_dir":	"iter2_final"
+    },
+    "max_ep_len":	100,
+    "num_test_episodes":	10,
+    "pi_lr":	0.002,
+    "polyak":	0.999,
+    "q_lr":	0.002,
+    "replay_size":	8000000,
+    "save_freq":	1,
+    "seed":	0,
+    "start_steps":	20000,
+    "steps_per_epoch":	1500,
+    "trained_ac":	null,
+    "update_after":	1000,
+    "update_every":	50
+}

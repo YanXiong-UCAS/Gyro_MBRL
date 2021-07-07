@@ -1,0 +1,18 @@
+,iter2_final
+$	heta$ MAE (rad),0.088
+$\phi$ MAE (rad),0.063
+$	heta$ MSSE (rad),0.0117
+$\phi$ MSSE (rad),0.0098
+$	heta$ in bounds (%),99.98
+$\phi$ in bounds (%),100.0
+$	heta$ unsteady (%),0.0
+$\phi$ unsteady (%),0.0
+$	heta$ rise time (s),0.4942
+$\phi$ rise time (s),0.3146
+$	heta$ settling time (s),0.6
+$\phi$ settling time (s),0.4733
+u1 (V),0.7063
+u2 (V),0.5487
+u1 variation (V),0.4051
+u2 variation (V),0.3955
+Convergence time (min),0.0

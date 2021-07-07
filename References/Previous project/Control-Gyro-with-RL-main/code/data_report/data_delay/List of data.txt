@@ -1,0 +1,24 @@
+data_20201106_1321:
+model: best with 3 hidden layers
+NN runtime: 4300 us
+start position: red up and blue front
+Other: not optimized for compilation
+
+data_20201106_1645:
+model: best with 3 hidden layers
+NN runtime: 850 us
+start position: red up and blue front
+Other: optimized with '-O3' flag
+
+data_20201106_1306:
+model: best with 3 hidden layers
+NN runtime: 600 us
+start position: red up and blue front
+Other: change double to float
+
+data_20201106_1310:
+model: best with 3 hidden layers
+NN runtime: 600 us
+start position: red up and blue back
+Other: change double to float
+

@@ -1,0 +1,18 @@
+,ddpg_r01e1000_2000epochs
+$	heta$ MAE (rad),0.1609
+$\phi$ MAE (rad),0.1016
+$	heta$ MSSE (rad),0.0765
+$\phi$ MSSE (rad),0.0392
+$	heta$ in bounds (%),96.6
+$\phi$ in bounds (%),93.6
+$	heta$ unsteady (%),0.3
+$\phi$ unsteady (%),6.0
+$	heta$ rise time (s),0.4841
+$\phi$ rise time (s),0.3442
+$	heta$ settling time (s),0.8282
+$\phi$ settling time (s),0.59
+u1 (V),1.5593
+u2 (V),2.6204
+u1 variation (V),1.8349
+u2 variation (V),4.2967
+Convergence time (min),0.0

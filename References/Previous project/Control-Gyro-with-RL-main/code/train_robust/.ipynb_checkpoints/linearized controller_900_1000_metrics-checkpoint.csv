@@ -1,0 +1,18 @@
+,linearized controller
+$	heta$ MAE (rad),0.1526395818519818
+$\phi$ MAE (rad),0.28588347412391657
+$	heta$ MSSE (rad),0.0202831555824374
+$\phi$ MSSE (rad),0.1368769098979722
+$	heta$ in bounds (%),100.0
+$\phi$ in bounds (%),85.0
+$	heta$ unsteady (%),0.0
+$\phi$ unsteady (%),0.0
+$	heta$ rise time (s),1.0864321608040202
+$\phi$ rise time (s),1.0357670706473547
+$	heta$ settling time (s),1.1880832735104094
+$\phi$ settling time (s),1.8177306284508967
+u1 (V),0.7602843091922401
+u2 (V),0.6594931340040029
+u1 variation (V),0.18123841365490925
+u2 variation (V),0.12392876912874305
+Convergence time (min),0.0

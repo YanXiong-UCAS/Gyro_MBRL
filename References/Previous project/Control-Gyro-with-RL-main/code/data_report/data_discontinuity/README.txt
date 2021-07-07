@@ -1,0 +1,1 @@
+show that the 9D obs space leads to discontinuity when ref is 180

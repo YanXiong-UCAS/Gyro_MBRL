@@ -1,0 +1,18 @@
+,baseline_robust
+$	heta$ MAE (rad),0.10434278366425226
+$\phi$ MAE (rad),0.08815404172689334
+$	heta$ MSSE (rad),0.02257928926979079
+$\phi$ MSSE (rad),0.021133368139847928
+$	heta$ in bounds (%),100.0
+$\phi$ in bounds (%),99.0
+$	heta$ unsteady (%),0.0
+$\phi$ unsteady (%),1.0
+$	heta$ rise time (s),0.47386934673366843
+$\phi$ rise time (s),0.37612303943962233
+$	heta$ settling time (s),0.6981717096118893
+$\phi$ settling time (s),0.6889871041956773
+u1 (V),1.225908181426654
+u2 (V),0.7401317789220776
+u1 variation (V),1.2000970440064662
+u2 variation (V),0.5808184231985384
+Convergence time (min),0.0

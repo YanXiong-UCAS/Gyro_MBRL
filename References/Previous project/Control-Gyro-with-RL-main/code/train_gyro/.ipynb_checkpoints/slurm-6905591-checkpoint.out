@@ -1,0 +1,11 @@
+STARTING at Fri Jan 22 16:39:59 CET 2021
+Traceback (most recent call last):
+  File "/home/zhithuan/train_gyro/m005.py", line 9, in <module>
+    import spinup
+  File "/home/zhithuan/spinningup/spinup/__init__.py", line 14, in <module>
+    from spinup.algos.pytorch.ddpg.ddpg import ddpg as ddpg_pytorch
+  File "/home/zhithuan/spinningup/spinup/algos/pytorch/ddpg/ddpg.py", line 319
+    if save_file and epoch % 50 = 0:
+                                ^
+SyntaxError: invalid syntax
+FINISHED at Fri Jan 22 16:40:04 CET 2021
