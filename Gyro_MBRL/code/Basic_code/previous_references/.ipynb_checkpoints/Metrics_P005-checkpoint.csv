@@ -1,0 +1,18 @@
+Unnamed: 0,ddpg_p005,ddpg_p005_gamma095,ddpg_p005_len300
+$	heta$ MAE (rad),0.3697,0.141,0.3746
+$\phi$ MAE (rad),1.5714,0.0923,0.2029
+$	heta$ MSSE (rad),0.1764,0.0561,0.2348
+$\phi$ MSSE (rad),1.3913,0.0366,0.0926
+$	heta$ in bounds (%),0.61,98.9,47.83
+$\phi$ in bounds (%),0.01,95.05,65.27
+$	heta$ unsteady (%),99.23,0.03,28.29
+$\phi$ unsteady (%),99.87,4.52,29.13
+$	heta$ rise time (s),0.3155,0.5368,0.5527
+$\phi$ rise time (s),0.1005,0.3456,0.3577
+$	heta$ settling time (s),3.4933,0.7189,0.9492
+$\phi$ settling time (s),9.8995,0.5475,0.7116
+u1 (V),9.9836,1.7733,4.7235
+u2 (V),9.9582,1.8127,3.8254
+u1 variation (V),11.0202,2.449,6.2556
+u2 variation (V),9.4455,2.7734,5.4063
+Convergence time (min),0.0,0.0,0.0

@@ -1,0 +1,2 @@
+Config.,$	heta$ MAE (rad),$\phi$ MAE (rad),$	heta$ MSSE (rad),$\phi$ MSSE (rad),$	heta$ in bounds (%),$\phi$ in bounds (%),$	heta$ unsteady (%),$\phi$ unsteady (%),$	heta$ rise time (s),$\phi$ rise time (s),$	heta$ settling time (s),$\phi$ settling time (s),u1 (V),u2 (V),u1 variation (V),u2 variation (V),Convergence time (min)
+ddpg_re_2,0.1917,0.1192,0.1003,0.0611,89.4,90.0,2.1,8.5,0.5389,0.3623,0.8422,0.6136,1.9368,1.7766,2.599,2.5754,0.0
