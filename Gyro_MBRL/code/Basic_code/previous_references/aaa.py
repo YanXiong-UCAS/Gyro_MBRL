@@ -9,6 +9,7 @@
 #%%
 
 import gym
+import numpy
 import param
 from gym import spaces
 from gym.utils import seeding
@@ -17,6 +18,9 @@ from os import path
 from scipy.integrate import solve_ivp
 import pandas as pd
 import xlrd   # 用来打开Excel表格数据的包，其实pandas中有pd.read_cvs也可以读取文件
+import sys
+
+numpy.set_printoptions(threshold=sys.maxsize)
 
 import gym_gyroscope_env
 import spinup
@@ -101,11 +105,38 @@ agent = load_agent(agent_paths[0])
 
 f = "results.txt"
 with open(f, "w") as file:
-    for name, param in agent.named_parameters():
-        file.write(name)
-        file.write(str(param.tolist()))
+    #for name, param in agent.named_parameters():
+    #    file.write(name)
+    #    file.write(str(param))
 
-        print(name,' ', param)   # 显示具体数值，由于数据量过大，默认显示局部数据
+    #    print(name,' ', param)   # 显示具体数值，由于数据量过大，默认显示局部数据
+    file.write('const float w1[sz_hid_1][sz_obs] = ')
+    text = numpy.array2string(agent.pi.pi[0].weight.detach().numpy(), separator=",")
+    file.write(text.replace('[', '{').replace(']', '}') + ";\n\n")
+
+    file.write('const float b1[sz_hid_1] = ')
+    text = numpy.array2string(agent.pi.pi[0].bias.detach().numpy(),separator=",")
+    file.write(text.replace('[', '{').replace(']', '}') + ";\n\n")
+
+    file.write('const float w2[sz_hid_2][sz_hid_1] = ')
+    text = numpy.array2string(agent.pi.pi[2].weight.detach().numpy(), separator=",")
+    file.write(text.replace('[', '{').replace(']', '}') + ";\n\n")
+
+    file.write('const float b2[sz_hid_2] = ')
+    text = numpy.array2string(agent.pi.pi[2].bias.detach().numpy(), separator=",")
+    file.write(text.replace('[', '{').replace(']', '}') + ";\n\n")
+
+    file.write('const float w2[sz_act][sz_hid_3] = ')
+    text = numpy.array2string(agent.pi.pi[4].weight.detach().numpy(),separator=",")
+    file.write(text.replace('[', '{').replace(']', '}') + ";\n\n")
+
+    file.write('const float b3[sz_act] = ')
+    text = numpy.array2string(agent.pi.pi[4].bias.detach().numpy(), separator=",")
+    file.write(text.replace('[', '{').replace(']', '}') + ";\n\n")
+
+    # file.write(str(agent.pi.pi[0].weight.tolist().、))
+
+print('ggfcgdgf')
 
 
 
