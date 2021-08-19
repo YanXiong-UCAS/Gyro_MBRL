@@ -43,6 +43,7 @@ class GyroscopeEnvV1(gym.Env):
     
     Observation:
         observation = [cos(x1), sin(x1), x2, cos(x3), sin(x3), x4, x1_ref, x3_ref, w] (9 dimensions)
+
         The angles have been replaced with their cosine and sine to prevent the discontinuity at -pi and pi.
         The observation space is thus larger than the state space.
         
