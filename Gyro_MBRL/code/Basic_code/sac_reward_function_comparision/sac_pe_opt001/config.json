@@ -1,0 +1,46 @@
+{
+    "ac_kwargs":	{
+        "activation":	"ReLU",
+        "hidden_sizes":	[
+            128,
+            32
+        ]
+    },
+    "actor_critic":	"MLPActorCritic",
+    "alpha":	0.05,
+    "batch_size":	100,
+    "env_fn":	"functools.partial(<function env_fn at 0x7f5351b2f7b8>, 'GyroscopeEnv-v1', simu_args={'dt': 0.05, 'ep_len': 100, 'seed': 2}, reward_func='PE', reward_args={'qx1': 1, 'qx2': 0.2, 'qx3': 1, 'qx4': 0.2, 'pu1': 0.1, 'pu2': 0.1, 'p': 0.1, 'e': 40})",
+    "epochs":	200,
+    "exp_name":	"sac_pe_opt001",
+    "gamma":	0.95,
+    "logger":	{
+        "<spinup.utils.logx.EpochLogger object at 0x7f53501da5f8>":	{
+            "epoch_dict":	{},
+            "exp_name":	"sac_pe_opt001",
+            "first_row":	true,
+            "log_current_row":	{},
+            "log_headers":	[],
+            "output_dir":	"sac_pe_opt001",
+            "output_file":	{
+                "<_io.TextIOWrapper name='sac_pe_opt001/progress.txt' mode='w' encoding='UTF-8'>":	{
+                    "mode":	"w"
+                }
+            }
+        }
+    },
+    "logger_kwargs":	{
+        "exp_name":	"sac_pe_opt001",
+        "output_dir":	"sac_pe_opt001"
+    },
+    "lr":	0.00125,
+    "max_ep_len":	100,
+    "num_test_episodes":	10,
+    "polyak":	0.995,
+    "replay_size":	1000000,
+    "save_freq":	1,
+    "seed":	0,
+    "start_steps":	10000,
+    "steps_per_epoch":	1500,
+    "update_after":	1000,
+    "update_every":	50
+}

@@ -9,12 +9,12 @@
     "actor_critic":	"MLPActorCritic",
     "alpha":	0.5,
     "batch_size":	100,
-    "env_fn":	"functools.partial(<function env_fn at 0x7f13b575e268>, 'GyroscopeEnv-v1', simu_args={'dt': 0.05, 'ep_len': 100, 'seed': 2}, reward_func='Quadratic with exponential', reward_args={'qx1': 1, 'qx2': 0, 'qx3': 1, 'qx4': 0, 'pu1': 0, 'pu2': 0, 'eax1': 10, 'ebx1': 10, 'eax3': 10, 'ebx3': 10})",
-    "epochs":	500,
+    "env_fn":	"functools.partial(<function env_fn at 0x7f10bd8152f0>, 'GyroscopeEnv-v1', simu_args={'dt': 0.05, 'ep_len': 100, 'seed': 2}, reward_func='Quadratic with exponential', reward_args={'qx1': 1, 'qx2': 0, 'qx3': 1, 'qx4': 0, 'pu1': 0, 'pu2': 0, 'eax1': 10, 'ebx1': 10, 'eax3': 10, 'ebx3': 10})",
+    "epochs":	2000,
     "exp_name":	"sac_q_e",
     "gamma":	0.995,
     "logger":	{
-        "<spinup.utils.logx.EpochLogger object at 0x7f13b46cf898>":	{
+        "<spinup.utils.logx.EpochLogger object at 0x7f10bd45b9b0>":	{
             "epoch_dict":	{},
             "exp_name":	"sac_q_e",
             "first_row":	true,

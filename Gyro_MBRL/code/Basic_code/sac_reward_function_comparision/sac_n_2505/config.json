@@ -1,0 +1,46 @@
+{
+    "ac_kwargs":	{
+        "activation":	"ReLU",
+        "hidden_sizes":	[
+            512,
+            128
+        ]
+    },
+    "actor_critic":	"MLPActorCritic",
+    "alpha":	0.7,
+    "batch_size":	100,
+    "env_fn":	"functools.partial(<function env_fn at 0x7f5351b2f7b8>, 'GyroscopeEnv-v1', simu_args={'dt': 0.05, 'ep_len': 100, 'seed': 2}, reward_func='Normalized with bonus', reward_args={'k': 1, 'qx2': 1, 'qx4': 1, 'pu1': 0, 'pu2': 0, 'bound': 0.05, 'bonus': 2})",
+    "epochs":	200,
+    "exp_name":	"sac_n_2505",
+    "gamma":	0.95,
+    "logger":	{
+        "<spinup.utils.logx.EpochLogger object at 0x7f5351b347f0>":	{
+            "epoch_dict":	{},
+            "exp_name":	"sac_n_2505",
+            "first_row":	true,
+            "log_current_row":	{},
+            "log_headers":	[],
+            "output_dir":	"sac_n_2505",
+            "output_file":	{
+                "<_io.TextIOWrapper name='sac_n_2505/progress.txt' mode='w' encoding='UTF-8'>":	{
+                    "mode":	"w"
+                }
+            }
+        }
+    },
+    "logger_kwargs":	{
+        "exp_name":	"sac_n_2505",
+        "output_dir":	"sac_n_2505"
+    },
+    "lr":	0.0001,
+    "max_ep_len":	100,
+    "num_test_episodes":	10,
+    "polyak":	0.995,
+    "replay_size":	1000000,
+    "save_freq":	1,
+    "seed":	0,
+    "start_steps":	20000,
+    "steps_per_epoch":	1500,
+    "update_after":	1000,
+    "update_every":	50
+}
