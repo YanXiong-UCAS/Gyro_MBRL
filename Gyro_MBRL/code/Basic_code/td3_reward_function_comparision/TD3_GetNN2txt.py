@@ -7,14 +7,12 @@
 
 import gym
 import numpy
-import param
 from gym import spaces
 from gym.utils import seeding
 import numpy as np
 from os import path
 from scipy.integrate import solve_ivp
 import pandas as pd
-import xlrd  # 用来打开Excel表格数据的包，其实pandas中有pd.read_cvs也可以读取文件
 
 import gym_gyroscope_env
 import spinup
@@ -58,7 +56,7 @@ for agent_path in agent_paths[:]:  # 如果选择多个模型，则将绘制多�
 
 plt.legend(agent_paths, fontsize=24)
 # plt.legend(['PE'],fontsize=24)   # 奖励函数类型
-plt.savefig('tmp.png')
+plt.savefig('reward_function_curve.png')
 
 # %% md
 

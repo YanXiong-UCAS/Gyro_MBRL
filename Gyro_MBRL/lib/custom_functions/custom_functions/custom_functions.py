@@ -346,7 +346,7 @@ def read_progress(agent_path):
     # count lines
     file = open(agent_path+"/progress.txt", "r")
     count = len(file.readlines())
-    data = np.empty([count-1, 19])
+    data = np.empty([count-1, 23])
     file.seek(0)
     
     # read each line as a numpy array
