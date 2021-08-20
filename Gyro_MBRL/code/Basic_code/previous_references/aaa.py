@@ -18,9 +18,10 @@ from os import path
 from scipy.integrate import solve_ivp
 import pandas as pd
 import xlrd   # 用来打开Excel表格数据的包，其实pandas中有pd.read_cvs也可以读取文件
-import sys
 
-numpy.set_printoptions(threshold=sys.maxsize)
+
+import sys
+numpy.set_printoptions(threshold=sys.maxsize)   # 用于设置打印显示数据长度
 
 import gym_gyroscope_env
 import spinup
