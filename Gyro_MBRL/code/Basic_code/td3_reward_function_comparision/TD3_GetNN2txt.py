@@ -83,7 +83,7 @@ plot_test(state_record, action_record, t_end, 4)  # 绘制测试效果
 
 # %%
 
-f = "TD3_NN_weights_bias.txt"  # 打开指定文本文件
+f = "TD3_NN_weights_bias_5000.txt"  # 打开指定文本文件
 numpy.set_printoptions(threshold=sys.maxsize)  # 用于设置文本输出数据的显示长度
 
 with open(f, "w") as file:
