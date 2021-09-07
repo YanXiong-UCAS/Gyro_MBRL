@@ -48,7 +48,7 @@ plt.yticks(fontsize=24)
 plt.grid()
 
 # agent_paths = ['m0_005']  # 选择模型
-agent_paths = ['td3_pe_opt_ing_25000']
+agent_paths = ['td3_pe_opt_ing_30000']
 
 for agent_path in agent_paths[:]:  # 如果选择多个模型，则将绘制多个模型的奖励函数的变化曲线
     progress = read_progress(agent_path)
@@ -68,7 +68,7 @@ env_name = 'GyroscopeEnv-v1'  # 指定测试环境
 init_state = np.array([0, 0, 0, 0, 45 / 180 * np.pi, -60 / 180 * np.pi, 200 / 60 * 2 * np.pi])  # 初始化状态空间
 env = create_env(env_name, state=init_state)  # 根据初始化环境参数设置环境
 # agent_paths = ['m0_005']  # 选择模型
-agent_paths = ['td3_pe_opt_ing_25000']
+agent_paths = ['td3_pe_opt_ing_30000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
 t_end = 5  # 测试步长
@@ -83,7 +83,7 @@ plot_test(state_record, action_record, t_end, 4)  # 绘制测试效果
 
 # %%
 
-f = "TD3_NN_weights_bias_25000-2.txt"  # 打开指定文本文件
+f = "TD3_NN_weights_bias_30000.txt"  # 打开指定文本文件
 numpy.set_printoptions(threshold=sys.maxsize)  # 用于设置文本输出数据的显示长度
 
 with open(f, "w") as file:
