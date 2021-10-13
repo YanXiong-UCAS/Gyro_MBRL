@@ -9,3 +9,6 @@ from gym_gyroscope_env.envs.gyroscope_integral_env_v1 import GyroscopeIntegralEn
 from gym_gyroscope_env.envs.gyroscope_robust_env import GyroscopeRobustEnv
 
 from gym_gyroscope_env.envs.gyroscope_real_env import GyroscopeRealEnv
+
+from gym_gyroscope_env.envs.gyroscope_new_env_v0 import GyroscopeNewEnvV0
+
