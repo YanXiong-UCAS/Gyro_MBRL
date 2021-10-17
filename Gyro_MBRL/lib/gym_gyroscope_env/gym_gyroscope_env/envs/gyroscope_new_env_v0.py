@@ -1,6 +1,10 @@
 '''
+OM-1: 外部方形框架固定，RL直接控制red Gimbal, Blue Gimbal和Golden Disk；
+OM-2: Red Gimbal locked, RL直接控制Golden Disk和Blue Gimbal,进而间接控制外部方形框架转角，该工况为欠驱动；
 Difference with other GyroscopeEnv:
 -- Add a golden disk as a control object for RL
+-- 后续测试的时候采用“正弦跟踪曲线”+“阶跃跟踪曲线”
+
 Write by Yan
 2021/10/13
 '''
@@ -18,39 +22,44 @@ class GyroscopeNewEnvV0(gym.Env):
     GyroscopeEnv:
         GyroscopeEnv is a GYM environment for Quanser 3-DOF gyroscope. The gyroscope consists of a disk mounted
         inside an inner gimbal which in turn is mounted inside an outer gimbal.
-        The two gimbals and golden disk are controlled by a RL controller, and the disk is controlled by a PID controller.
+        The <<<two gimbals and golden disk>>> are controlled by a RL controller.
 
-    State:
-        state = [x1, x2, x3, x4, x1_ref, x3_ref, w] (7 dimensions)
+    State:   增加“golden disk”的转速作为RL的控制对象
+        state = [x1, x2, x3, x4, x1_ref, x3_ref, w, w_a, w_ref]
+        (7 dimensions >>> 9 dimensions)  增加golden disk角加速度，以及转速目标值
+
         Outer red gimbal:
-            x1, or theta: angular position [rad]
-            x2, or dot(theta): angular velocity [rad/s]
-            x1_ref: angular position reference [rad]
-            u1: motor voltage [V]
+            x1, or theta: angular position [rad]   被控对象1 -- 转角
+            x2, or dot(theta): angular velocity [rad/s]   被控对象1的转速
+            x1_ref: angular position reference [rad]   被控对象1的转角目标值
+            u1: motor voltage [V]   被控对象1的电压值
         Inner blue gimbal:
-            x3, or phi: angular position [rad]
-            x4, or dot(phi): angular velocity [rad/s]
-            x3_ref: angular position reference [rad]
-            u2: motor voltage [V]
+            x3, or phi: angular position [rad]   被控对象2 -- 转角
+            x4, or dot(phi): angular velocity [rad/s]   被空对象2的转速
+            x3_ref: angular position reference [rad]   被控对象2的转角目标值
+            u2: motor voltage [V]   被控对象2的电压值
         Golden disk:
-            w: angular velocity [rad/s]
-            u3: motor voltage [V]
-        Mechanical constraints:
+            w: angular velocity [rad/s]   被控对象3 -- 转速
+            w_a: angular acceleration [rad/s2]   被控对象3的角加速度
+            w_ref: angular velocity [rad/s]   被控对象3的转速目标值
+            u3: motor voltage [V]   被控对象3的电压值
+        Mechanical constraints: 阈值
             motor voltage: [-10, 10] [V]
             gimbal velocity: [-100, 100] [rpm]
             disk velocity: [-300, 300] [rpm]
 
-    Observation:
-        observation = [cos(x1), sin(x1), x2, cos(x3), sin(x3), x4, x1_ref, x3_ref, w] (9 dimensions)
+    Observation:   增加“golden disk”的转速目标值到观测空间
+        observation = [cos(x1), sin(x1), x2, cos(x3), sin(x3), x4, x1_ref, x3_ref, w, w_a, w_ref]
+        (9 dimensions >>> 11 dimensions)
 
         The angles have been replaced with their cosine and sine to prevent the discontinuity at -pi and pi.
         The observation space is thus larger than the state space.
 
-    Action:
-        action = [a1, a2]
-        Note: a1, a2 are normalized voltages
-              u1, u2 = 10*a1, 10*a2 are actual voltages
-              T1, T2 = KtotRed*u1, KtotBlue*u2 are motor torques
+    Action:   增加“golden disk”的转速，即控制“golden disk”的电机转速的电压作为RL的控制对象
+        action = [a1, a2, a3]
+        Note: a1, a2, a3 are normalized voltages
+              u1, u2, u3 = 10*a1, 10*a2, 10*a3 are actual voltages
+              T1, T2, T3 = KtotRed*u1, KtotBlue*u2, KtotRed*u3 are motor torques   金色圆盘的转矩需要吗？？？仔细检查后续的程序后作出最终判断
 
     Initialization:
         Some versions of Gym may not support initialization with arguments, so initialize it manully with:
@@ -62,7 +71,9 @@ class GyroscopeNewEnvV0(gym.Env):
         # reward_func, optional reward function, default value is 'Quadratic'
         reward_func = 'Quadratic'
         # reward_args, optional reward parameters
-        reward_args = {'qx1': 1, 'qx2': 0.01, 'qx3': 1, 'qx4': 0.01, 'pu1': 0, 'pu2': 0}
+        reward_args = {'qx1': 1, 'qx2': 0.01, 'qx3': 1, 'qx4': 0.01, 'pu1': 0, 'pu2': 0}   是否需要增加参数数量，检查后最初最终判断！
+        reward_args = {'qx1': 1, 'qx2': 0.01, 'qx3': 1, 'qx4': 0.01, 'pu1': 0, 'pu2': 0, 'qw': 1, 'qwa': 0.01, 'pu3': 0}
+        仔细检查判断上述修订是否正确
     """
 
     # ---------------------------------------------------------------------------------------------------- #
@@ -80,18 +91,18 @@ class GyroscopeNewEnvV0(gym.Env):
         # Initialize reward parameters
         self.init_reward(reward_func, reward_args)
 
-        # State space, 7D
+        # State space, 7D  对应转换成9D
         self.state_bound = np.array([self.maxAngle, self.maxGimbalSpeed, self.maxAngle, self.maxGimbalSpeed,
-                                     self.maxAngle, self.maxAngle, self.maxDiskSpeed], dtype=np.float32)
+                                     self.maxAngle, self.maxAngle, self.maxDiskSpeed, self.maxDiskSpeed], dtype=np.float32)
         self.state_space = spaces.Box(low=-self.state_bound, high=self.state_bound, dtype=np.float32)
 
-        # Observation space (normalized), 9D
-        self.observation_bound = np.array([1.0] * 9, dtype=np.float32)
+        # Observation space (normalized), 9D   对应转换成11D
+        self.observation_bound = np.array([1.0] * 11, dtype=np.float32)
         self.observation_space = spaces.Box(low=-self.observation_bound, high=self.observation_bound,
                                             dtype=np.float32)
 
-        # Action space (normalized), 2D
-        self.action_bound = np.array([1.0] * 2, dtype=np.float32)
+        # Action space (normalized), 2D   对应转换3D
+        self.action_bound = np.array([1.0] * 3, dtype=np.float32)
         self.action_space = spaces.Box(low=-self.action_bound, high=self.action_bound, dtype=np.float32)
 
     # Initialize fixed parameters of the gyroscope
@@ -115,22 +126,25 @@ class GyroscopeNewEnvV0(gym.Env):
         self.Kamp = 0.5  # current gain, A/V
         self.Ktorque = 0.0704  # motor gain, Nm/A
         self.eff = 0.86  # motor efficiency
-        self.nRed = 1.5  # red gearbox eatio
-        self.nBlue = 1  # blue gearbox eatio
+        self.nRed = 1.5  # red gearbox ratio
+        self.nBlue = 1  # blue gearbox ratio
+        self.nDisk = 1 # disk gearbox ratio
         self.KtotRed = self.Kamp * self.Ktorque * self.eff * self.nRed  # Nm/V
         self.KtotBlue = self.Kamp * self.Ktorque * self.eff * self.nBlue  # Nm/V
+        self.KtotDisk = self.Kamp * self.Ktorque * self.eff * self.nDisk  # Nm/V
 
         # Mechanical constraints
         self.maxVoltage = 10  # V
         self.maxAngle = np.pi  # rad
         self.maxGimbalSpeed = 100 * 2 * np.pi / 60  # rad/s
         self.maxDiskSpeed = 300 * 2 * np.pi / 60  # rad/s
+        self.maxDiskAcceleration = 300 * 2 * np.pi / 60  # rad/s
 
     # Initialize simulation parameters
     def init_simu(self, dt=0.05, ep_len=100, seed=2, friction=False):
 
         # Gyroscope state and observation
-        self.state = np.array([0] * 7)
+        self.state = np.array([0] * 8)   # 转换成8D
         self.observe()
 
         # Time step in s
@@ -164,10 +178,13 @@ class GyroscopeNewEnvV0(gym.Env):
             'Absolute': self.abs_reward,
             'Normalized': self.norm_reward,
             'Normalized with bonus': self.norm_bon_reward,
+
             # continuous reward functions, part two
             'Power': self.power_reward,
             'Exponential': self.exp_reward,
             'PE': self.power_exp_reward,
+            'PE_new_V0': self.power_exp_reward_new_V0,   # 根据新环境设置的奖励函数！！！等待验证可行后，考虑增加其他奖励函数的形式进行对比验证！！！
+
             # sparse reward functions
             'Sparse': self.sparse_reward,
             'Sparse with exp': self.sparse_reward_with_exp,
@@ -187,10 +204,10 @@ class GyroscopeNewEnvV0(gym.Env):
     # Simulate the environment fot one step dt
     def step(self, a):
 
-        # extract states and actions
-        x1, x2, x3, x4, x1_ref, x3_ref, w = self.state
-        a1, a2 = a
-        u1, u2 = self.maxVoltage * a1, self.maxVoltage * a2
+        # extract states and actions   对应增加golden disk转速的控制
+        x1, x2, x3, x4, x1_ref, x3_ref, w, w_ref = self.state
+        a1, a2, a3 = a
+        u1, u2, u3 = self.maxVoltage * a1, self.maxVoltage * a2, self.maxVoltage * a3
 
         # Increment episode
         self.ep_cur += 1
@@ -203,10 +220,10 @@ class GyroscopeNewEnvV0(gym.Env):
         results = solve_ivp(
             fun=self.dxdt,
             t_span=(0, self.dt),  # solver starts with t = 0 and integrates until it reaches t = self.dt
-            y0=[x1, x2, x3, x4],  # initial state
+            y0=[x1, x2, x3, x4, w],  # initial state   初始化状态空间
             method='RK45',
             t_eval=np.linspace(0, self.dt, self.eval_per_dt),  # times at which to store the computed solution
-            args=(u1, u2)
+            args=(u1, u2, u3)   # RL控制器对应三个电压输出值
         )
 
         # evaluated states, each contains eval_per_dt points
@@ -214,36 +231,42 @@ class GyroscopeNewEnvV0(gym.Env):
         x2_eval = results.y[1]
         x3_eval = results.y[2]
         x4_eval = results.y[3]
+        w_eval = results.y[4]
 
-        # change in velocity, or acceleration
+        # change in velocity, or acceleration   速度/加速度的变化
         dx2 = x2_eval[-1] - x2
         dx4 = x4_eval[-1] - x4
+        dw = w_eval[-1] - w
 
-        # keep only the last evaluation value
+
+        # keep only the last evaluation value   只保留最后的评估值
         x1 = x1_eval[-1]
         x2 = x2_eval[-1]
         x3 = x3_eval[-1]
         x4 = x4_eval[-1]
+        w = w_eval[-1]
+
 
         # Angle error (normalized between pi and -pi to get smallest distance)
         x1_diff = self.angle_normalize(x1 - x1_ref)
         x3_diff = self.angle_normalize(x3 - x3_ref)
+        w_diff = self.diskspeed_normalize(w - w_ref)
 
         # update state and observation
-        self.state = np.array([x1, x2, x3, x4, x1_ref, x3_ref, w])
+        self.state = np.array([x1, x2, x3, x4, x1_ref, x3_ref, w, w_ref])   # 7D >>> 8D
         self.observe()
 
         # Reward(float), normalized everything in advance
-        reward = self.reward_func(x1_diff / self.maxAngle, x3_diff / self.maxAngle,
-                                  x2 / self.maxGimbalSpeed, x4 / self.maxGimbalSpeed,
-                                  dx2 / self.maxGimbalSpeed, dx4 / self.maxGimbalSpeed,
-                                  a1, a2, **self.reward_args)
+        reward = self.reward_func(x1_diff / self.maxAngle, x3_diff / self.maxAngle, w_diff / self.maxDiskSpeed,
+                                  x2 / self.maxGimbalSpeed, x4 / self.maxGimbalSpeed, w / self.maxDiskSpeed,
+                                  dx2 / self.maxGimbalSpeed, dx4 / self.maxGimbalSpeed, dw / self.maxDiskSpeed,
+                                  a1, a2, a3, **self.reward_args)   # 对应后续的奖励函数的“自变量排列顺序”也需要进行重新的编排！
 
         # Done(bool): whether it’s time to reset the environment again.
         if self.sparse:
             # in sparse reward functions, terminate the episode when the speed is too large
             # otherwise the exploration will happen mainly in high speed area, which is not desired
-            done = self.ep_cur > self.ep_len or x2 > 2 * self.maxGimbalSpeed or x4 > 2 * self.maxGimbalSpeed
+            done = self.ep_cur > self.ep_len or x2 > 2 * self.maxGimbalSpeed or x4 > 2 * self.maxGimbalSpeed or w > self.maxDiskSpeed
         else:
             # in other reward functions, terminating the episode early will encourage the agent to
             # speed up the gyroscope and end the episode, because the reward is negative
@@ -255,7 +278,7 @@ class GyroscopeNewEnvV0(gym.Env):
         return self.observation, reward, done, info
 
     # Compute the derivative of the state, here u is NOT normalized
-    def dxdt(self, t, x, u1, u2):
+    def dxdt(self, t, x, u1, u2, u3):
 
         J1, J2, J3, Jdx3 = self.J1, self.J2, self.J3, self.Jdx3
         w = self.state[-1]
@@ -341,6 +364,16 @@ class GyroscopeNewEnvV0(gym.Env):
                                1 - np.exp(-e * abs(x2))) + qx4 * (1 - np.exp(-e * abs(x4))) + pu1 * (
                                        1 - np.exp(-e * abs(u1))) + pu2 * (1 - np.exp(-e * abs(u2))))
 
+    def power_exp_reward_new_V0(self, x1_diff, x3_diff, w_diff, x2, x4, w, dx2, dx4, dw, u1, u2, u3, qx1=1, qx2=1, qx3=1, qx4=1, qw = 1, pu1=0, pu2=0, pu3 =0,
+                         p=0.1, e=10):   # 需要修订！！！
+        return -(qx1 * abs(x1_diff) ** p + qx3 * abs(x3_diff) ** p + qw * abs(w_diff) ** p + qx2 * abs(x2) ** p + qx4 * abs(
+            x4) ** p + qw * abs(w) ** p + pu1 * abs(u1) ** p + pu2 * abs(u2) ** p + pu3 * abs(u3) ** p ) - (
+                           qx1 * (1 - np.exp(-e * abs(x1_diff))) + qx3 * (1 - np.exp(-e * abs(x3_diff))) + qw * (1 - np.exp(-e * abs(w_diff))) + qx2 * (
+                               1 - np.exp(-e * abs(x2))) + qx4 * (1 - np.exp(-e * abs(x4))) + qw * (1 - np.exp(-e * abs(w)))+ pu1 * (
+                                       1 - np.exp(-e * abs(u1))) + pu2 * (1 - np.exp(-e * abs(u2))) + pu3 * (1 - np.exp(-e * abs(u3))))
+
+
+
     # ---------------------------------------------------------------------------------------------------- #
     # ------------------------------------------ Reward Part III ----------------------------------------- #
     # ---------------------------------------------------------------------------------------------------- #
@@ -397,7 +430,10 @@ class GyroscopeNewEnvV0(gym.Env):
         return self.observation
 
     # Keep the angles between -lim and lim
-    def angle_normalize(self, x, lim=np.pi):
+    def angle_normalize(self, x, lim=np.pi):   # self.maxAngle = np.pi  [rad]
+        return ((x + lim) % (2 * lim)) - lim
+
+    def diskspeed_normalize(self, x, lim=300 * 2 * np.pi / 60):   # self.maxDiskSpeed = 300 * 2 * np.pi / 60  [rad/s]
         return ((x + lim) % (2 * lim)) - lim
 
     def seed(self, seed=None):
