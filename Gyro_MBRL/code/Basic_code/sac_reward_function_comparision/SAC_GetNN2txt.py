@@ -51,8 +51,9 @@ plt.yticks(fontsize=24)
 plt.grid()
 
 # agent_paths = ['m0_005']  # 选择模型
-agent_paths = ['sac_pe_opt', "sac_pe_opt001", "sac_pe_opt002", "sac_pe_opt003", "sac_pe_opt004", "sac_pe_opt005", "sac_pe_opt006", "sac_pe_opt007", "sac_pe_opt_ing"]   # PE---opt
+# agent_paths = ['sac_pe_opt', "sac_pe_opt001", "sac_pe_opt002", "sac_pe_opt003", "sac_pe_opt004", "sac_pe_opt005", "sac_pe_opt006", "sac_pe_opt007", "sac_pe_opt_ing"]   # PE---opt
 
+agent_paths = ["sac_pe_opt003"]
 
 for agent_path in agent_paths[:]:  # 如果选择多个模型，则将绘制多个模型的奖励函数的变化曲线
     progress = read_progress(agent_path)

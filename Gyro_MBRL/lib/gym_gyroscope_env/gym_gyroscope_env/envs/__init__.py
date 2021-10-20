@@ -12,3 +12,4 @@ from gym_gyroscope_env.envs.gyroscope_real_env import GyroscopeRealEnv
 
 from gym_gyroscope_env.envs.gyroscope_new_env_v0 import GyroscopeNewEnvV0
 
+from gym_gyroscope_env.envs.gyroscope_env_new4paper_v0 import GyroscopeEnvNew4PaperV0

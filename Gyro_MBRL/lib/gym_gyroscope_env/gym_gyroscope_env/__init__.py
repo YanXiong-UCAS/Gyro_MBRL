@@ -39,3 +39,8 @@ register(
     id = 'GyroscopeNewEnv-v0',
     entry_point = 'gym_gyroscope_env.envs:GyroscopeNewEnvV0'
 )
+
+register(
+    id = 'GyroscopeEnvNew4Paper-v0',
+    entry_point = 'gym_gyroscope_env.envs:GyroscopeEnvNew4PaperV0'
+)

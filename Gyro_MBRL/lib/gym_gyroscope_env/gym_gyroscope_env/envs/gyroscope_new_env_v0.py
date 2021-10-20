@@ -129,16 +129,16 @@ class GyroscopeNewEnvV0(gym.Env):
         self.nRed = 1.5  # red gearbox ratio
         self.nBlue = 1  # blue gearbox ratio
         self.nDisk = 1 # disk gearbox ratio
-        self.KtotRed = self.Kamp * self.Ktorque * self.eff * self.nRed  # Nm/V
-        self.KtotBlue = self.Kamp * self.Ktorque * self.eff * self.nBlue  # Nm/V
-        self.KtotDisk = self.Kamp * self.Ktorque * self.eff * self.nDisk  # Nm/V
+        self.KtotRed = self.Kamp * self.Ktorque * self.eff * self.nRed  # Nm/V   Red Gimbal
+        self.KtotBlue = self.Kamp * self.Ktorque * self.eff * self.nBlue  # Nm/V   Blue Gimbal
+        self.KtotDisk = self.Kamp * self.Ktorque * self.eff * self.nDisk  # Nm/V   Golden Disk
 
         # Mechanical constraints
         self.maxVoltage = 10  # V
         self.maxAngle = np.pi  # rad
         self.maxGimbalSpeed = 100 * 2 * np.pi / 60  # rad/s
         self.maxDiskSpeed = 300 * 2 * np.pi / 60  # rad/s
-        self.maxDiskAcceleration = 300 * 2 * np.pi / 60  # rad/s
+        self.maxDiskAcceleration = 300 * 2 * np.pi / 60  # rad/s2   加速度的上限应该是多少呢？？？
 
     # Initialize simulation parameters
     def init_simu(self, dt=0.05, ep_len=100, seed=2, friction=False):
