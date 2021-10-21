@@ -13,6 +13,8 @@ import numpy as np
 from os import path
 from scipy.integrate import solve_ivp
 import pandas as pd
+import shutil
+import os
 
 import gym_gyroscope_env
 import spinup
@@ -48,7 +50,7 @@ plt.yticks(fontsize=24)
 plt.grid()
 
 # agent_paths = ['m0_005']  # 选择模型
-agent_paths = ['td3_pe_new4paper500']
+agent_paths = ['td3_pe_opt_ing_45000']
 
 for agent_path in agent_paths[:]:  # 如果选择多个模型，则将绘制多个模型的奖励函数的变化曲线
     progress = read_progress(agent_path)
@@ -56,7 +58,7 @@ for agent_path in agent_paths[:]:  # 如果选择多个模型，则将绘制多�
 
 plt.legend(agent_paths, fontsize=24)
 # plt.legend(['PE'],fontsize=24)   # 奖励函数类型
-plt.savefig('reward_function_td3_pe_new4paper500.png')
+plt.savefig('reward_function_td3_pe_opt_ing_45000.png')
 
 # %% md
 
@@ -68,7 +70,7 @@ env_name = 'GyroscopeEnvNew4Paper-v0'  # 指定测试环境，同样指向转为
 init_state = np.array([0, 0, 0, 0, 45 / 180 * np.pi, -60 / 180 * np.pi, 200 / 60 * 2 * np.pi])  # 初始化状态空间
 env = create_env(env_name, state=init_state)  # 根据初始化环境参数设置环境
 # agent_paths = ['m0_005']  # 选择模型
-agent_paths = ['td3_pe_new4paper500']
+agent_paths = ['td3_pe_opt_ing_45000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
 t_end = 20  # 测试步长
@@ -168,6 +170,25 @@ blueg = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 score, state_record, obs_record, action_record, reward_record = test_agent(env, agent, t_end, w_seq=disk, x1_ref_seq=redg, x3_ref_seq=blueg)  # 指定环境下测试模型
 plot_test(state_record, action_record, t_end, 4)  # 绘制测试效果
 
+
+# file:///media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data
+
+
+# 保存测试数据
+main_data_path = "/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data"
+shutil.rmtree(main_data_path)
+os.mkdir(main_data_path)
+
+state_record_numpy = state_record
+action_record_numpy = action_record
+state_record_dataframe = pd.DataFrame(state_record_numpy)   # 将Numpy转换为pandas,因为Numpy和Tensor都不支持to_csv
+action_record_dataframe = pd.DataFrame(action_record_numpy)
+
+state_record_dataframe.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/state_record.csv')   # 创建CSV文件并存储到CSV中
+action_record_dataframe.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/action_record.csv')   # 创建CSV文件并存储到CSV中
+
+
+
 # %%
 
 # Export NN_weights_bias to file.txt
@@ -175,7 +196,7 @@ plot_test(state_record, action_record, t_end, 4)  # 绘制测试效果
 
 # %%
 
-f = "TD3_NN_weights_bias_td3_pe_new4paper500.txt"  # 打开指定文本文件
+f = "TD3_NN_weights_bias_td3_pe_opt_ing_45000.txt"  # 打开指定文本文件
 numpy.set_printoptions(threshold=sys.maxsize)  # 用于设置文本输出数据的显示长度
 
 with open(f, "w") as file:
