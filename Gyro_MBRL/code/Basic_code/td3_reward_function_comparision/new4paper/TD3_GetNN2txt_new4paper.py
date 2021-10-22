@@ -65,7 +65,7 @@ plt.savefig('reward_function_td3_pe_opt_ing_45000.png')
 # Test an agent   # 测试模型
 
 # %%
-
+# 测试Set-point跟踪效果
 env_name = 'GyroscopeEnvNew4Paper-v0'  # 指定测试环境，同样指向转为本研究设计的环境
 init_state = np.array([0, 0, 0, 0, 45 / 180 * np.pi, -60 / 180 * np.pi, 200 / 60 * 2 * np.pi])  # 初始化状态空间
 env = create_env(env_name, state=init_state)  # 根据初始化环境参数设置环境
@@ -77,143 +77,85 @@ t_end = 20  # 测试步长
 
 # np.array([0] * 100)
 # Set-point tracking仿真时间为25s，每个阶段5s，共分为四个阶段，分别为
-# Red Gimbal[1 > -1 > 1 >-1], Blue Gimbal[-1 > 1 > -1 >1]，Disk[55 > 40 > 50 > 35]
-# Reference tracking仿真时间为4s，正弦变化曲线，周期为2s，极大值1，极小值-1
-
+# Red Gimbal[0.9 > -0.8 > 0.8 > -0.9], Blue Gimbal[-0.9 > 0.8 > -0.8 > 0.9]，Disk[55 > 40 > 50 > 35]
 # Disk转速控制 [rad/s]   >>>   建议修改成函数方程式，相对简单一些！也容易修改，如果的哦欧式数字的话，修改起来太复杂麻烦！
-disk = [55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55,
-       55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55,
-       55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55,
-       55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55,
-       55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55,
-       55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55,
-
-        40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
-        40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
-        40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
-        40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
-        40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
-        40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
-
-        50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
-        50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
-        50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
-        50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
-        50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
-        50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
-
-       35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35,
-       35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35,
-       35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35,
-       35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35,
-       35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35,
-       35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35
-        ]
-
+disk_setpoint = [55]*100 + [40]*100 + [50]*100 + [35]*100
 # Red Gimbal控制  [rad]
-redg = [0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-       0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-       0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-       0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-       0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-       0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-       0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-       0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-        -0.8,
-
-        0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-        0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-        0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-        0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-        0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-        0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-        0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-        0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-        -0.9,
-         ]
-
+redg_setpoint = [0.9]*100 + [-0.8]*100 + [0.8]*100 + [-0.9]*100
 # Blue Gimbal控制  [rad]
-blueg = [-0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9, -0.9,
-       -0.9,
+blueg_setpoint = [-0.9]*100 + [0.8]*100 + [-0.8]*100 +[0.9]*100
 
-         0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-         0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-         0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-         0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-         0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-         0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-         0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
-         0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
+score_setp, state_record_setp, obs_record_setp, action_record_setp, reward_record_setp = test_agent(env, agent, t_end, w_seq=disk_setpoint, x1_ref_seq=redg_setpoint, x3_ref_seq=blueg_setpoint)  # 指定环境下测试模型
+plot_test(state_record_setp, action_record_setp, t_end, 4)  # 绘制测试效果
 
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8, -0.8,
-         -0.8,
+# %%
 
-         0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-         0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-         0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-         0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-         0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-         0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-         0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-         0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9,
-        ]
-
-
-score, state_record, obs_record, action_record, reward_record = test_agent(env, agent, t_end, w_seq=disk, x1_ref_seq=redg, x3_ref_seq=blueg)  # 指定环境下测试模型
-plot_test(state_record, action_record, t_end, 4)  # 绘制测试效果
-
-
-# file:///media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data
-
-
-# 保存测试数据
-main_data_path = "/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data"
+# 保存测试数据('score'、'state_record'、'obs_record'、'action_record'、'reward_record')
+main_data_path = "/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point"
 shutil.rmtree(main_data_path)
 os.mkdir(main_data_path)
 
-state_record_numpy = state_record
-action_record_numpy = action_record
-state_record_dataframe = pd.DataFrame(state_record_numpy)   # 将Numpy转换为pandas,因为Numpy和Tensor都不支持to_csv
-action_record_dataframe = pd.DataFrame(action_record_numpy)
+state_record_numpy_setp = state_record_setp
+obs_record_numpy_setp = obs_record_setp
+action_record_numpy_setp = action_record_setp
+reward_record_numpy_setp = reward_record_setp
+state_record_dataframe_setp = pd.DataFrame(state_record_numpy_setp)   # 将Numpy转换为pandas,因为Numpy和Tensor都不支持to_csv
+obs_record_dataframe_setp = pd.DataFrame(obs_record_numpy_setp)
+action_record_dataframe_setp = pd.DataFrame(action_record_numpy_setp)
+reward_record_dataframe_setp = pd.DataFrame(reward_record_numpy_setp)
 
-state_record_dataframe.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/state_record_td3_pe_opt_ing_45000.csv')   # 创建CSV文件并存储到CSV中
-action_record_dataframe.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/action_record_td3_pe_opt_ing_45000.csv')   # 创建CSV文件并存储到CSV中
+# 保存'score'、'state_record'、'obs_record'、'action_record'、'reward_record'
+state_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/state_record_setp_td3_pe_opt_ing_45000.csv')   # 创建CSV文件并存储到CSV中
+obs_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/obs_record_setp_td3_pe_opt_ing_45000.csv')
+action_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/action_record_setp_td3_pe_opt_ing_45000.csv')
+reward_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/reward_record_setp_td3_pe_opt_ing_45000.csv')
+
+
+
+# %%
+# 测试Reference跟踪效果
+env_name = 'GyroscopeEnvNew4Paper-v0'  # 指定测试环境，同样指向转为本研究设计的环境
+init_state = np.array([0, 0, 0, 0, 45 / 180 * np.pi, -60 / 180 * np.pi, 200 / 60 * 2 * np.pi])  # 初始化状态空间
+env = create_env(env_name, state=init_state)  # 根据初始化环境参数设置环境
+# agent_paths = ['m0_005']  # 选择模型
+agent_paths = ['td3_pe_opt_ing_45000']
+agent = load_agent(agent_paths[0])  # 加载模型
+
+t_end = 20  # 测试步长
+
+# np.array([0] * 100)
+# Reference tracking仿真时间为4s，正弦变化曲线，周期为2s，极大值1，极小值-1
+# Disk转速控制 [rad/s]   >>>   建议修改成函数方程式，相对简单一些！也容易修改，如果的哦欧式数字的话，修改起来太复杂麻烦！
+disk_ref = [55]*100 + [40]*100 + [50]*100 + [35]*100
+# Red Gimbal控制  [rad]
+redg_ref = [0.9]*100 + [-0.8]*100 + [0.8]*100 + [-0.9]*100
+# Blue Gimbal控制  [rad]
+blueg_ref = [-0.9]*100 + [0.8]*100 + [-0.8]*100 +[0.9]*100
+
+score_ref, state_record_ref, obs_record_ref, action_record_ref, reward_record_ref = test_agent(env, agent, t_end, w_seq=disk_ref, x1_ref_seq=redg_ref, x3_ref_seq=blueg_ref)  # 指定环境下测试模型
+plot_test(state_record_ref, action_record_ref, t_end, 4)  # 绘制测试效果
+
+# %%
+
+# 保存测试数据('score'、'state_record'、'obs_record'、'action_record'、'reward_record')
+main_data_path = "/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref"
+shutil.rmtree(main_data_path)
+os.mkdir(main_data_path)
+
+state_record_numpy_ref = state_record_ref
+obs_record_numpy_ref = obs_record_ref
+action_record_numpy_ref = action_record_ref
+reward_record_numpy_ref = reward_record_ref
+state_record_dataframe_ref = pd.DataFrame(state_record_numpy_ref)   # 将Numpy转换为pandas,因为Numpy和Tensor都不支持to_csv
+obs_record_dataframe_ref = pd.DataFrame(obs_record_numpy_ref)
+action_record_dataframe_ref = pd.DataFrame(action_record_numpy_ref)
+reward_record_dataframe_ref = pd.DataFrame(reward_record_numpy_ref)
+
+# 保存'score'、'state_record'、'obs_record'、'action_record'、'reward_record'
+state_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/state_record_ref_td3_pe_opt_ing_45000.csv')   # 创建CSV文件并存储到CSV中
+obs_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/obs_record__ref_td3_pe_opt_ing_45000.csv')
+action_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/action_record_ref_td3_pe_opt_ing_45000.csv')
+reward_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/reward_record_ref_td3_pe_opt_ing_45000.csv')
 
 
 
