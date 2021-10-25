@@ -139,10 +139,10 @@ env = create_env(env_name, state=init_state)  # 根据初始化环境参数设�
 agent_paths = ['td3_pe_opt_ing_45000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
-t_end = 4  # 测试步长
+t_end = 20  # 测试步长
 
 # np.array([0] * 100)
-ref_matrix = np.loadtxt(open("TD3_setpoint.csv","rt"),delimiter=",",skiprows=0)
+ref_matrix = np.loadtxt(open("td3ref.csv","rb"),delimiter=",",skiprows=0)
 
 # Reference tracking仿真时间为4s，正弦变化曲线，周期为2s，极大值1，极小值-1
 # Disk转速控制 [rad/s]   >>>   建议修改成函数方程式，相对简单一些！也容易修改，如果的哦欧式数字的话，修改起来太复杂麻烦！   numpy.array2string(ref_matrix[:,0].tolist(),separator=",").replace('\n ','')

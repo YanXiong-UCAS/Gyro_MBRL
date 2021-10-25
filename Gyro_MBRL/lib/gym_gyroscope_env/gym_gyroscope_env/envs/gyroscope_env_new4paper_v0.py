@@ -124,7 +124,7 @@ class GyroscopeEnvNew4PaperV0(gym.Env):
         self.maxVoltage = 10 # V
         self.maxAngle = np.pi # rad
         self.maxGimbalSpeed = 100 * 2 * np.pi / 60 # rad/s
-        self.maxDiskSpeed = 600 * 2 * np.pi / 60 # rad/s
+        self.maxDiskSpeed = 678 * 2 * np.pi / 60 # rad/s
         
     # Initialize simulation parameters
     def init_simu(self, dt = 0.05, ep_len = 100, seed = 2, friction = False):
