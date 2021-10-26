@@ -1,6 +1,6 @@
 # %% md
 
-# Model testing with PE on Env-v1 and Export NN_weights_bias to file.txt
+# Model testing with PE on Env-v1 & GyroscopeEnvNew4Paper-v0 and Export NN_weights_bias to file.txt
 # 模型测试以及将模型参数（权重&偏差等）输出到指定文本文件
 
 # %%
