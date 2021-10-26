@@ -50,7 +50,7 @@ plt.yticks(fontsize=24)
 plt.grid()
 
 # agent_paths = ['m0_005']  # 选择模型
-agent_paths = ['td3_pe_opt_ing_45000']
+agent_paths = ['td3_pe_opt_ing_100000']
 
 for agent_path in agent_paths[:]:  # 如果选择多个模型，则将绘制多个模型的奖励函数的变化曲线
     progress = read_progress(agent_path)
@@ -58,7 +58,7 @@ for agent_path in agent_paths[:]:  # 如果选择多个模型，则将绘制多�
 
 plt.legend(agent_paths, fontsize=24)
 # plt.legend(['PE'],fontsize=24)   # 奖励函数类型
-plt.savefig('reward_function_td3_pe_opt_ing_45000.png')
+plt.savefig('reward_function_td3_pe_opt_ing_100000.png')
 
 # %% md
 
@@ -79,7 +79,7 @@ env_name = 'GyroscopeEnvNew4Paper-v0'  # 指定测试环境，同样指向转为
 init_state = np.array([0, 0, 0, 0, 45 / 180 * np.pi, -60 / 180 * np.pi, 200 / 60 * 2 * np.pi])  # 初始化状态空间
 env = create_env(env_name, state=init_state)  # 根据初始化环境参数设置环境
 # agent_paths = ['m0_005']  # 选择模型
-agent_paths = ['td3_pe_opt_ing_45000']
+agent_paths = ['td3_pe_opt_ing_100000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
 t_end = 100  # 测试步长
@@ -114,10 +114,10 @@ action_record_dataframe_setp = pd.DataFrame(action_record_numpy_setp)
 reward_record_dataframe_setp = pd.DataFrame(reward_record_numpy_setp)
 
 # 保存'score'、'state_record'、'obs_record'、'action_record'、'reward_record'
-state_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/state_record_setp_td3_pe_opt_ing_45000.csv')   # 创建CSV文件并存储到CSV中
-obs_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/obs_record_setp_td3_pe_opt_ing_45000.csv')
-action_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/action_record_setp_td3_pe_opt_ing_45000.csv')
-reward_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/reward_record_setp_td3_pe_opt_ing_45000.csv')
+state_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/state_record_setp_td3_pe_opt_ing_100000.csv')   # 创建CSV文件并存储到CSV中
+obs_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/obs_record_setp_td3_pe_opt_ing_100000.csv')
+action_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/action_record_setp_td3_pe_opt_ing_100000.csv')
+reward_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/reward_record_setp_td3_pe_opt_ing_100000.csv')
 
 
 
@@ -136,7 +136,7 @@ env_name = 'GyroscopeEnvNew4Paper-v0'  # 指定测试环境，同样指向转为
 init_state = np.array([0, 0, 0, 0, 45 / 180 * np.pi, -60 / 180 * np.pi, 200 / 60 * 2 * np.pi])  # 初始化状态空间
 env = create_env(env_name, state=init_state)  # 根据初始化环境参数设置环境
 # agent_paths = ['m0_005']  # 选择模型
-agent_paths = ['td3_pe_opt_ing_45000']
+agent_paths = ['td3_pe_opt_ing_100000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
 t_end = 20  # 测试步长
@@ -172,10 +172,10 @@ action_record_dataframe_ref = pd.DataFrame(action_record_numpy_ref)
 reward_record_dataframe_ref = pd.DataFrame(reward_record_numpy_ref)
 
 # 保存'score'、'state_record'、'obs_record'、'action_record'、'reward_record'
-state_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/state_record_ref_td3_pe_opt_ing_45000.csv')   # 创建CSV文件并存储到CSV中
-obs_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/obs_record__ref_td3_pe_opt_ing_45000.csv')
-action_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/action_record_ref_td3_pe_opt_ing_45000.csv')
-reward_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/reward_record_ref_td3_pe_opt_ing_45000.csv')
+state_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/state_record_ref_td3_pe_opt_ing_100000.csv')   # 创建CSV文件并存储到CSV中
+obs_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/obs_record__ref_td3_pe_opt_ing_100000.csv')
+action_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/action_record_ref_td3_pe_opt_ing_100000.csv')
+reward_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/reward_record_ref_td3_pe_opt_ing_100000.csv')
 
 
 
@@ -186,7 +186,7 @@ reward_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_co
 
 # %%
 
-f = "TD3_NN_weights_bias_td3_pe_opt_ing_45000.txt"  # 打开指定文本文件
+f = "TD3_NN_weights_bias_td3_pe_opt_ing_100000.txt"  # 打开指定文本文件
 numpy.set_printoptions(threshold=sys.maxsize)  # 用于设置文本输出数据的显示长度
 
 with open(f, "w") as file:
