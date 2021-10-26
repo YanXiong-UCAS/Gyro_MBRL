@@ -65,6 +65,15 @@ plt.savefig('reward_function_td3_pe_opt_ing_45000.png')
 # Test an agent   # 测试模型
 
 # %%
+
+# 测试Set-point跟踪效果
+
+
+
+
+
+
+# %%
 # 测试Set-point跟踪效果
 env_name = 'GyroscopeEnvNew4Paper-v0'  # 指定测试环境，同样指向转为本研究设计的环境
 init_state = np.array([0, 0, 0, 0, 45 / 180 * np.pi, -60 / 180 * np.pi, 200 / 60 * 2 * np.pi])  # 初始化状态空间
@@ -73,17 +82,17 @@ env = create_env(env_name, state=init_state)  # 根据初始化环境参数设�
 agent_paths = ['td3_pe_opt_ing_45000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
-t_end = 20  # 测试步长
+t_end = 100  # 测试步长
 
 # np.array([0] * 100)
 # Set-point tracking仿真时间为25s，每个阶段5s，共分为四个阶段，分别为
 # Red Gimbal[0.9 > -0.8 > 0.8 > -0.9], Blue Gimbal[-0.9 > 0.8 > -0.8 > 0.9]，Disk[55 > 40 > 50 > 35]
 # Disk转速控制 [rad/s]   >>>   建议修改成函数方程式，相对简单一些！也容易修改，如果的哦欧式数字的话，修改起来太复杂麻烦！
-disk_setpoint = [55]*100 + [40]*100 + [50]*100 + [35]*100
+disk_setpoint = [55]*500 + [40]*500 + [50]*500 + [35]*500
 # Red Gimbal控制  [rad]
-redg_setpoint = [0.9]*100 + [-0.8]*100 + [0.8]*100 + [-0.9]*100
+redg_setpoint = [0.9]*500 + [-0.8]*500 + [0.8]*500 + [-0.9]*500
 # Blue Gimbal控制  [rad]
-blueg_setpoint = [-0.9]*100 + [0.8]*100 + [-0.8]*100 +[0.9]*100
+blueg_setpoint = [-0.9]*500 + [0.8]*500 + [-0.8]*500 +[0.9]*500
 
 score_setp, state_record_setp, obs_record_setp, action_record_setp, reward_record_setp = test_agent(env, agent, t_end, w_seq=disk_setpoint, x1_ref_seq=redg_setpoint, x3_ref_seq=blueg_setpoint)  # 指定环境下测试模型
 plot_test(state_record_setp, action_record_setp, t_end, 4)  # 绘制测试效果
@@ -113,6 +122,15 @@ reward_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_c
 
 
 # %%
+
+# 测试Reference跟踪效果
+
+
+
+
+
+
+# %%
 # 测试Reference跟踪效果
 env_name = 'GyroscopeEnvNew4Paper-v0'  # 指定测试环境，同样指向转为本研究设计的环境
 init_state = np.array([0, 0, 0, 0, 45 / 180 * np.pi, -60 / 180 * np.pi, 200 / 60 * 2 * np.pi])  # 初始化状态空间
@@ -124,13 +142,15 @@ agent = load_agent(agent_paths[0])  # 加载模型
 t_end = 20  # 测试步长
 
 # np.array([0] * 100)
+ref_matrix = np.loadtxt(open("td3ref.csv","rb"),delimiter=",",skiprows=0)
+
 # Reference tracking仿真时间为4s，正弦变化曲线，周期为2s，极大值1，极小值-1
-# Disk转速控制 [rad/s]   >>>   建议修改成函数方程式，相对简单一些！也容易修改，如果的哦欧式数字的话，修改起来太复杂麻烦！
-disk_ref = [55]*100 + [40]*100 + [50]*100 + [35]*100
+# Disk转速控制 [rad/s]   >>>   建议修改成函数方程式，相对简单一些！也容易修改，如果的哦欧式数字的话，修改起来太复杂麻烦！   numpy.array2string(ref_matrix[:,0].tolist(),separator=",").replace('\n ','')
+disk_ref = ref_matrix[:,2].tolist()
 # Red Gimbal控制  [rad]
-redg_ref = [0.9]*100 + [-0.8]*100 + [0.8]*100 + [-0.9]*100
+redg_ref = ref_matrix[:,1].tolist()
 # Blue Gimbal控制  [rad]
-blueg_ref = [-0.9]*100 + [0.8]*100 + [-0.8]*100 +[0.9]*100
+blueg_ref = ref_matrix[:,0].tolist()
 
 score_ref, state_record_ref, obs_record_ref, action_record_ref, reward_record_ref = test_agent(env, agent, t_end, w_seq=disk_ref, x1_ref_seq=redg_ref, x3_ref_seq=blueg_ref)  # 指定环境下测试模型
 plot_test(state_record_ref, action_record_ref, t_end, 4)  # 绘制测试效果

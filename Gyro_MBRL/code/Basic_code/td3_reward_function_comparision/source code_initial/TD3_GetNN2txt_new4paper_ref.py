@@ -82,7 +82,7 @@ env = create_env(env_name, state=init_state)  # 根据初始化环境参数设�
 agent_paths = ['td3_pe_opt_ing_45000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
-t_end = 40  # 测试步长
+t_end = 100  # 测试步长
 
 # np.array([0] * 100)
 # Set-point tracking仿真时间为25s，每个阶段5s，共分为四个阶段，分别为
