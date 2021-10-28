@@ -82,17 +82,17 @@ env = create_env(env_name, state=init_state)  # 根据初始化环境参数设�
 agent_paths = ['td3_pe_opt_ing_100000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
-t_end = 100  # 测试步长
+t_end = 20  # 测试步长
 
 # np.array([0] * 100)
 # Set-point tracking仿真时间为25s，每个阶段5s，共分为四个阶段，分别为
 # Red Gimbal[0.9 > -0.8 > 0.8 > -0.9], Blue Gimbal[-0.9 > 0.8 > -0.8 > 0.9]，Disk[55 > 40 > 50 > 35]
 # Disk转速控制 [rad/s]   >>>   建议修改成函数方程式，相对简单一些！也容易修改，如果的哦欧式数字的话，修改起来太复杂麻烦！
-disk_setpoint = [55]*500 + [40]*500 + [50]*500 + [35]*500
+disk_setpoint = [55]*250 + [40]*250 + [50]*250 + [35]*250
 # Red Gimbal控制  [rad]
-redg_setpoint = [0.9]*500 + [-0.8]*500 + [0.8]*500 + [-0.9]*500
+redg_setpoint = [0.9]*250 + [-0.8]*250 + [0.8]*250 + [-0.9]*250
 # Blue Gimbal控制  [rad]
-blueg_setpoint = [-0.9]*500 + [0.8]*500 + [-0.8]*500 +[0.9]*500
+blueg_setpoint = [-0.9]*250 + [0.8]*250 + [-0.8]*250 +[0.9]*250
 
 score_setp, state_record_setp, obs_record_setp, action_record_setp, reward_record_setp = test_agent(env, agent, t_end, w_seq=disk_setpoint, x1_ref_seq=redg_setpoint, x3_ref_seq=blueg_setpoint)  # 指定环境下测试模型
 plot_test(state_record_setp, action_record_setp, t_end, 4)  # 绘制测试效果
@@ -100,7 +100,7 @@ plot_test(state_record_setp, action_record_setp, t_end, 4)  # 绘制测试效果
 # %%
 
 # 保存测试数据('score'、'state_record'、'obs_record'、'action_record'、'reward_record')
-main_data_path = "/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point"
+main_data_path = "/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/set_point"
 shutil.rmtree(main_data_path)
 os.mkdir(main_data_path)
 
@@ -114,10 +114,24 @@ action_record_dataframe_setp = pd.DataFrame(action_record_numpy_setp)
 reward_record_dataframe_setp = pd.DataFrame(reward_record_numpy_setp)
 
 # 保存'score'、'state_record'、'obs_record'、'action_record'、'reward_record'
-state_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/state_record_setp_td3_pe_opt_ing_100000.csv')   # 创建CSV文件并存储到CSV中
-obs_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/obs_record_setp_td3_pe_opt_ing_100000.csv')
-action_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/action_record_setp_td3_pe_opt_ing_100000.csv')
-reward_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/reward_record_setp_td3_pe_opt_ing_100000.csv')
+state_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/set_point/state_record_setp_td3_pe_opt_ing_100000.csv')   # 创建CSV文件并存储到CSV中
+obs_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/set_point/obs_record_setp_td3_pe_opt_ing_100000.csv')
+action_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/set_point/action_record_setp_td3_pe_opt_ing_100000.csv')
+reward_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/set_point/reward_record_setp_td3_pe_opt_ing_100000.csv')
+
+# 保存set-point跟踪曲线数据 disk_setpoint、redg_setpoint、blueg_setpoint
+
+disk_setpoint_numpy_setp = disk_setpoint
+disk_setpoint_dataframe_setp = pd.DataFrame(disk_setpoint_numpy_setp)
+disk_setpoint_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/set_point/disk_setpoint_td3_pe_opt_ing_100000.csv')
+
+redg_setpoint_numpy_setp = redg_setpoint
+redg_setpoint_dataframe_setp = pd.DataFrame(redg_setpoint_numpy_setp)
+redg_setpoint_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/set_point/redg_setpoint_td3_pe_opt_ing_100000.csv')
+
+blueg_setpoint_numpy_setp = blueg_setpoint
+blueg_setpoint_dataframe_setp = pd.DataFrame(blueg_setpoint_numpy_setp)
+blueg_setpoint_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/set_point/blueg_setpoint_td3_pe_opt_ing_100000.csv')
 
 
 
@@ -142,7 +156,7 @@ agent = load_agent(agent_paths[0])  # 加载模型
 t_end = 20  # 测试步长
 
 # np.array([0] * 100)
-ref_matrix = np.loadtxt(open("td3ref.csv","rb"),delimiter=",",skiprows=0)
+ref_matrix = np.loadtxt(open("TD3_Ref.csv","rb"),delimiter=",",skiprows=0)
 
 # Reference tracking仿真时间为4s，正弦变化曲线，周期为2s，极大值1，极小值-1
 # Disk转速控制 [rad/s]   >>>   建议修改成函数方程式，相对简单一些！也容易修改，如果的哦欧式数字的话，修改起来太复杂麻烦！   numpy.array2string(ref_matrix[:,0].tolist(),separator=",").replace('\n ','')
@@ -158,7 +172,7 @@ plot_test(state_record_ref, action_record_ref, t_end, 4)  # 绘制测试效果
 # %%
 
 # 保存测试数据('score'、'state_record'、'obs_record'、'action_record'、'reward_record')
-main_data_path = "/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref"
+main_data_path = "/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/ref"
 shutil.rmtree(main_data_path)
 os.mkdir(main_data_path)
 
@@ -172,10 +186,24 @@ action_record_dataframe_ref = pd.DataFrame(action_record_numpy_ref)
 reward_record_dataframe_ref = pd.DataFrame(reward_record_numpy_ref)
 
 # 保存'score'、'state_record'、'obs_record'、'action_record'、'reward_record'
-state_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/state_record_ref_td3_pe_opt_ing_100000.csv')   # 创建CSV文件并存储到CSV中
-obs_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/obs_record__ref_td3_pe_opt_ing_100000.csv')
-action_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/action_record_ref_td3_pe_opt_ing_100000.csv')
-reward_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/reward_record_ref_td3_pe_opt_ing_100000.csv')
+state_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/ref/state_record_ref_td3_pe_opt_ing_100000.csv')   # 创建CSV文件并存储到CSV中
+obs_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/ref/obs_record__ref_td3_pe_opt_ing_100000.csv')
+action_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/ref/action_record_ref_td3_pe_opt_ing_100000.csv')
+reward_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/ref/reward_record_ref_td3_pe_opt_ing_100000.csv')
+
+# 保存set-point跟踪曲线数据 disk_setpoint、redg_setpoint、blueg_setpoint
+
+disk_ref_numpy_setp = disk_ref
+disk_ref_dataframe_setp = pd.DataFrame(disk_ref_numpy_setp)
+disk_ref_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/ref/disk_ref_td3_pe_opt_ing_100000.csv')
+
+redg_ref_numpy_setp = redg_ref
+redg_ref_dataframe_setp = pd.DataFrame(redg_ref_numpy_setp)
+redg_ref_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/ref/redg_ref_td3_pe_opt_ing_100000.csv')
+
+blueg_ref_numpy_setp = blueg_ref
+blueg_ref_dataframe_setp = pd.DataFrame(blueg_ref_numpy_setp)
+blueg_ref_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source_code_initial/test_data/ref/blueg_ref_td3_pe_opt_ing_100000.csv')
 
 
 
@@ -217,3 +245,4 @@ with open(f, "w") as file:
 print(agent.named_parameters)  # 只显示模型结构，不现实具体数值
 
 print('------Export Finished------')
+

@@ -82,7 +82,7 @@ env = create_env(env_name, state=init_state)  # 根据初始化环境参数设�
 agent_paths = ['td3_pe_opt_ing_45000']
 agent = load_agent(agent_paths[0])  # 加载模型
 
-t_end = 100  # 测试步长
+t_end = 20  # 测试步长
 
 # np.array([0] * 100)
 # Set-point tracking仿真时间为25s，每个阶段5s，共分为四个阶段，分别为
@@ -119,6 +119,19 @@ obs_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code
 action_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/action_record_setp_td3_pe_opt_ing_45000.csv')
 reward_record_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/set-point/reward_record_setp_td3_pe_opt_ing_45000.csv')
 
+# 保存set-point跟踪曲线数据 disk_setpoint、redg_setpoint、blueg_setpoint
+
+disk_setpoint_numpy_setp = disk_setpoint
+disk_setpoint_dataframe_setp = pd.DataFrame(disk_setpoint_numpy_setp)
+disk_setpoint_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source code_initial/test_data/set-point/disk_setpoint_td3_pe_opt_ing_100000.csv')
+
+redg_setpoint_numpy_setp = redg_setpoint
+redg_setpoint_dataframe_setp = pd.DataFrame(redg_setpoint_numpy_setp)
+redg_setpoint_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source code_initial/test_data/set-point/redg_setpoint_td3_pe_opt_ing_100000.csv')
+
+blueg_setpoint_numpy_setp = blueg_setpoint
+blueg_setpoint_dataframe_setp = pd.DataFrame(blueg_setpoint_numpy_setp)
+blueg_setpoint_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source code_initial/test_data/set-point/blueg_setpoint_td3_pe_opt_ing_100000.csv')
 
 
 # %%
@@ -177,6 +190,19 @@ obs_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/
 action_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/action_record_ref_td3_pe_opt_ing_45000.csv')
 reward_record_dataframe_ref.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/new4paper/test_data/ref/reward_record_ref_td3_pe_opt_ing_45000.csv')
 
+# 保存set-point跟踪曲线数据 disk_setpoint、redg_setpoint、blueg_setpoint
+
+disk_ref_numpy_setp = disk_ref
+disk_ref_dataframe_setp = pd.DataFrame(disk_ref_numpy_setp)
+disk_ref_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source code_initial/test_data/ref/disk_ref_td3_pe_opt_ing_100000.csv')
+
+redg_ref_numpy_setp = redg_ref
+redg_ref_dataframe_setp = pd.DataFrame(redg_ref_numpy_setp)
+redg_ref_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source code_initial/test_data/ref/redg_ref_td3_pe_opt_ing_100000.csv')
+
+blueg_ref_numpy_setp = blueg_ref
+blueg_ref_dataframe_setp = pd.DataFrame(blueg_ref_numpy_setp)
+blueg_ref_dataframe_setp.to_csv('/media/xiongyan/Data_Repositories/Project_code/Gyro_MBRL/Gyro_MBRL/code/Basic_code/td3_reward_function_comparision/source code_initial/test_data/ref/blueg_ref_td3_pe_opt_ing_100000.csv')
 
 
 # %%
